@@ -8,7 +8,7 @@ import re
 st.set_page_config(
     page_title="Gestión de Turnos - Gabinete", 
     layout="wide",
-    page_icon="💆‍♀️"
+    page_icon=""
 )
 
 DB_FILE = "turnos.csv"
@@ -112,7 +112,7 @@ st.markdown("""
 
 # ==================== HEADER ====================
 
-st.markdown('<div class="main-header">💆‍♀️ Sistema de Gestión de Turnos</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">AGENDA</div>', unsafe_allow_html=True)
 
 # ==================== ESTADÍSTICAS RÁPIDAS ====================
 
