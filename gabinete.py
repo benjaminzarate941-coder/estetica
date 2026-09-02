@@ -6,7 +6,7 @@ import os
 import re
 
 st.set_page_config(
-    page_title="Gestión de Turnos", 
+    page_title="Gestión de Turnos - Gabinete", 
     layout="wide"
 )
 
@@ -35,14 +35,17 @@ def validar_telefono(tel):
     return len(tel_limpio) >= 10, tel_limpio
 
 
-def verificar_duplicado(df, cliente, fecha, hora):
+def verificar_duplicado_cliente(df, cliente, fecha, hora):
+    """Verifica si EL MISMO CLIENTE ya tiene turno en esa fecha y hora"""
     if df.empty:
         return False
+    
     duplicados = df[
-        (df['Cliente'].str.lower() == cliente.lower()) & 
+        (df['Cliente'].str.lower().str.strip() == cliente.lower().strip()) & 
         (df['Fecha'] == fecha) & 
-        (df['Hora'] == hora.strftime("%H:%M"))
+        (df['Hora'].astype(str) == hora.strftime("%H:%M"))
     ]
+    
     return not duplicados.empty
 
 
@@ -154,7 +157,7 @@ with st.expander("Registrar Nuevo Turno", expanded=True):
         with col_a:
             cliente = st.text_input("Nombre del cliente")
             servicio = st.selectbox("Servicio", [
-                "Depilación laser soprano ice Platinum", 
+                "Depilación laser.soprano ice Platinum", 
                 "Ultracavitacion + vacumm", 
                 "Limpieza facial profunda",
                 "Tratamiento para piernas cansadas",
@@ -165,9 +168,9 @@ with st.expander("Registrar Nuevo Turno", expanded=True):
                 "Dermaplaning",
                 "Electroestimulacion",
                 "Peeling quimico",
-                "Tratamiento piel acneica",
-                "Tratamiento hidratacion facial",
-                "Rejuvenecimiento cuello y escote",
+                "Tratamiento  piel acneica",
+                "Tratamiento de hidratacion y nutricion facial",
+                "Tratamiento de rejuvenicimiento cuello y escotte",            
             ])
         
         with col_b:
@@ -185,8 +188,8 @@ with st.expander("Registrar Nuevo Turno", expanded=True):
                 tel_valido, tel_limpio = validar_telefono(tel)
                 if not tel_valido:
                     st.error("El número debe tener al menos 10 dígitos")
-                elif verificar_duplicado(st.session_state.turnos, cliente, fecha, hora):
-                    st.warning("Ya existe un turno en ese horario")
+                elif verificar_duplicado_cliente(st.session_state.turnos, cliente, fecha, hora):
+                    st.warning(f"{cliente} ya tiene un turno agendado para el {fecha.strftime('%d/%m')} a las {hora.strftime('%H:%M')}")
                 else:
                     nuevo = pd.DataFrame([[cliente.strip(), tel_limpio, servicio, fecha, hora.strftime("%H:%M")]], 
                                         columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
