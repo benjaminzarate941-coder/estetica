@@ -5,10 +5,23 @@ import urllib.parse
 import os
 import re
 
+# ==================== CONFIGURACIÓN DE PÁGINA Y LOGO ====================
+
 st.set_page_config(
     page_title="Gestión de Turnos - Gabinete", 
-    layout="wide"
+    layout="wide",
+    page_icon="logo.png"  # <--- Tu logo como ícono de la pestaña
 )
+
+# Ocultar menú, footer y header de Streamlit para que se vea 100% tu marca
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 DB_FILE = "turnos.csv"
 
@@ -58,8 +71,8 @@ st.markdown("""
         font-weight: 600;
         color: #2c3e50;
         padding: 1rem 0;
-        border-bottom: 2px solid #3498db;
         margin-bottom: 1.5rem;
+        text-align: center;
     }
     
     .stButton>button {
@@ -109,9 +122,16 @@ st.markdown("""
 if 'turnos' not in st.session_state:
     st.session_state.turnos = cargar_datos()
 
-# ==================== HEADER Y STATS ====================
+# ==================== HEADER CON LOGO ====================
+
+# Mostrar el logo centrado en la parte superior
+col_logo1, col_logo2, col_logo3 = st.columns([1, 2, 1])
+with col_logo2:
+    st.image("logo.png", width=180)
 
 st.markdown('<div class="main-header">Sistema de Gestión de Turnos</div>', unsafe_allow_html=True)
+
+# ==================== ESTADÍSTICAS ====================
 
 hoy = datetime.today().date()
 turnos_hoy = st.session_state.turnos[st.session_state.turnos['Fecha'] == hoy] if not st.session_state.turnos.empty else pd.DataFrame()
