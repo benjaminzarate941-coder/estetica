@@ -94,21 +94,6 @@ st.markdown("""
         background-color: #0369a1;
     }
 
-    /* Forzar fondo negro y letras blancas para el botón de enviar formulario (Guardar Turno) */
-    [data-testid="stFormSubmitButton"] button {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        border: none !important;
-        font-weight: 500 !important;
-        border-radius: 6px !important;
-        width: 100% !important;
-    }
-    
-    [data-testid="stFormSubmitButton"] button:hover {
-        background-color: #262626 !important;
-        color: #ffffff !important;
-    }
-
     /* Estilo destacado para el Expander de Registrar Turno para que quede bien a la vista */
     [data-testid="stExpander"] {
         border: 2px solid #0284c7 !important;
@@ -238,7 +223,27 @@ with st.expander("📅 Registrar Nuevo Turno (Hacer clic para desplegar)", expan
         with col_h:
             hora = st.time_input("Hora", value=time(9, 0))
         
-        if st.form_submit_button("Guardar Turno"):
+        # Botón de envío estilizado mediante HTML/CSS embebido
+        st.markdown("""
+            <style>
+            div[data-testid="stFormSubmitButton"] > button {
+                background-color: #000000 !important;
+                color: #ffffff !important;
+                border: none !important;
+                font-weight: 500 !important;
+                border-radius: 6px !important;
+                width: 100% !important;
+            }
+            div[data-testid="stFormSubmitButton"] > button:hover {
+                background-color: #262626 !important;
+                color: #ffffff !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        submitted = st.form_submit_button("Guardar Turno")
+        
+        if submitted:
             if not cliente or not tel:
                 st.error("Complete nombre y WhatsApp")
             else:
