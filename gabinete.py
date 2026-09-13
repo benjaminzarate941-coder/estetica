@@ -59,7 +59,7 @@ def verificar_duplicado_cliente(df, cliente, fecha, hora):
     
     return not duplicados.empty
 
-# ==================== PALETA DE COLORES PROFESIONAL (CLÍNICA / GABINETE) ====================
+# ==================== PALETA Y ESTILOS PROFESIONALES ====================
 
 st.markdown("""
 <style>
@@ -78,7 +78,7 @@ st.markdown("""
         letter-spacing: -0.5px;
     }
     
-    /* Botones con tono corporativo elegante y suave */
+    /* Botones principales */
     .stButton>button {
         width: 100%;
         border-radius: 6px;
@@ -92,6 +92,22 @@ st.markdown("""
     
     .stButton>button:hover {
         background-color: #0369a1;
+    }
+
+    /* Forzar fondo negro y letras blancas para el botón de enlace (Recordatorio) */
+    [data-testid="stLinkButton"] > a {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border: none !important;
+        font-weight: 500 !important;
+        border-radius: 6px !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    [data-testid="stLinkButton"] > a:hover {
+        background-color: #262626 !important;
+        color: #ffffff !important;
     }
     
     /* Tarjetas de estadísticas sobrias */
