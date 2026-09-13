@@ -13,7 +13,7 @@ st.set_page_config(
     page_icon="logo.png"
 )
 
-# Ocultar menú, footer, header y marca de creador de Streamlit para vista móvil profesional
+# Ocultar menú, footer, header y marca de creador de Streamlit
 hide_streamlit_style = """
 <style>
 #MainMenu {visibility: hidden;}
@@ -59,67 +59,67 @@ def verificar_duplicado_cliente(df, cliente, fecha, hora):
     
     return not duplicados.empty
 
-# ==================== COLORIMETRÍA Y ESTILOS LUMINOSOS (ESTILO SPA/GABINETE) ====================
+# ==================== PALETA DE COLORES PROFESIONAL (SLATE & CORPORATE) ====================
 
 st.markdown("""
 <style>
-    /* Fondo general más luminoso y limpio */
+    /* Fondo general neutro muy suave (Slate 50) */
     .stApp {
-        background-color: #fcfcfd;
+        background-color: #f8fafc;
     }
 
     .main-header {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
         font-weight: 600;
-        color: #2d3748;
+        color: #0f172a;
         padding: 0.5rem 0;
         margin-bottom: 1rem;
         text-align: center;
         letter-spacing: -0.5px;
     }
     
-    /* Botones principales con tono elegante y luminoso (Teal/Mint armónico) */
+    /* Botones limpios con tono corporativo elegante */
     .stButton>button {
         width: 100%;
-        border-radius: 8px;
-        height: 2.6em;
-        background-color: #0d9488;
+        border-radius: 6px;
+        height: 2.5em;
+        background-color: #2563eb;
         color: white;
         font-weight: 500;
         border: none;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 5px rgba(13, 148, 136, 0.2);
+        transition: background-color 0.2s ease;
     }
     
     .stButton>button:hover {
-        background-color: #0f766e;
-        box-shadow: 0 4px 8px rgba(13, 148, 136, 0.3);
+        background-color: #1d4ed8;
     }
     
-    /* Tarjetas de estadísticas con efecto limpio y moderno */
+    /* Tarjetas de estadísticas sobrias y limpias */
     .stat-box {
-        padding: 1.2rem;
-        border-radius: 12px;
+        padding: 1.1rem;
+        border-radius: 8px;
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
     
     .stat-number {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #0f766e;
+        color: #1e293b;
     }
     
     .stat-label {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #64748b;
-        margin-top: 0.3rem;
+        margin-top: 0.2rem;
         font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    /* Contenedores y textos generales más claros */
+    /* Tipografía general balanceada */
     h1, h2, h3, p, label {
         color: #1e293b;
     }
@@ -142,7 +142,7 @@ if 'turnos' not in st.session_state:
 col_logo1, col_logo2, col_logo3 = st.columns([1, 2, 1])
 with col_logo2:
     if os.path.exists("logo.png"):
-        st.image("logo.png", width=160)
+        st.image("logo.png", width=150)
 
 st.markdown('<div class="main-header">Sistema de Gestión de Turnos</div>', unsafe_allow_html=True)
 
@@ -187,7 +187,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ==================== FORMULARIO ====================
 
-with st.expander("✨ Registrar Nuevo Turno", expanded=False):
+with st.expander("📅 Registrar Nuevo Turno", expanded=False):
     with st.form("form_turno", clear_on_submit=True):
         cliente = st.text_input("Nombre del cliente")
         servicio = st.selectbox("Servicio", [
@@ -330,4 +330,4 @@ with st.sidebar:
             st.rerun()
     
     st.write("---")
-    st.caption(f"Total registros: {len(st.session_state.turnos)}")
+    st.caption(f"Total registros: {len(st.session_state.turnos)}"
