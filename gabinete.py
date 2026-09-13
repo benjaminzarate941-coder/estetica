@@ -306,5 +306,4 @@ if not df.empty:
                     texto = f"Hola {row['Cliente']}, le recordamos su turno de {row['Servicio']} para el {fecha_f} a las {row['Hora']} hs. Saludos."
                     link = f"https://wa.me/{row['WhatsApp']}?text={urllib.parse.quote(texto)}"
                     st.link_button("💬 RECORDATORIO", link)
-                
-                with cols[3]:
+                                with cols[3]:
