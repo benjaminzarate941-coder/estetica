@@ -330,4 +330,4 @@ with st.sidebar:
             st.rerun()
     
     st.write("---")
-    st.caption(f"Total registros: {len(st.session_state.turnos)}"
+    st.caption(f"Total registros: {len(st.session_state.turnos)}")
