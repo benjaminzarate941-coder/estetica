@@ -59,11 +59,11 @@ def verificar_duplicado_cliente(df, cliente, fecha, hora):
     
     return not duplicados.empty
 
-# ==================== PALETA DE COLORES PROFESIONAL (SLATE & CORPORATE) ====================
+# ==================== PALETA DE COLORES PROFESIONAL (CLÍNICA / GABINETE) ====================
 
 st.markdown("""
 <style>
-    /* Fondo general neutro muy suave (Slate 50) */
+    /* Fondo general limpio y luminoso */
     .stApp {
         background-color: #f8fafc;
     }
@@ -71,19 +71,19 @@ st.markdown("""
     .main-header {
         font-size: 1.6rem;
         font-weight: 600;
-        color: #0f172a;
+        color: #1e293b;
         padding: 0.5rem 0;
         margin-bottom: 1rem;
         text-align: center;
         letter-spacing: -0.5px;
     }
     
-    /* Botones limpios con tono corporativo elegante */
+    /* Botones con tono corporativo elegante y suave */
     .stButton>button {
         width: 100%;
         border-radius: 6px;
         height: 2.5em;
-        background-color: #2563eb;
+        background-color: #0284c7;
         color: white;
         font-weight: 500;
         border: none;
@@ -91,10 +91,10 @@ st.markdown("""
     }
     
     .stButton>button:hover {
-        background-color: #1d4ed8;
+        background-color: #0369a1;
     }
     
-    /* Tarjetas de estadísticas sobrias y limpias */
+    /* Tarjetas de estadísticas sobrias */
     .stat-box {
         padding: 1.1rem;
         border-radius: 8px;
@@ -107,7 +107,7 @@ st.markdown("""
     .stat-number {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #1e293b;
+        color: #0f172a;
     }
     
     .stat-label {
@@ -119,7 +119,7 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
 
-    /* Tipografía general balanceada */
+    /* Tipografía general */
     h1, h2, h3, p, label {
         color: #1e293b;
     }
