@@ -93,22 +93,6 @@ st.markdown("""
     .stButton>button:hover {
         background-color: #0369a1;
     }
-
-    /* Forzar fondo negro y letras blancas para el botón de enlace (Recordatorio) */
-    [data-testid="stLinkButton"] > a {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        border: none !important;
-        font-weight: 500 !important;
-        border-radius: 6px !important;
-        width: 100% !important;
-        text-align: center !important;
-    }
-    
-    [data-testid="stLinkButton"] > a:hover {
-        background-color: #262626 !important;
-        color: #ffffff !important;
-    }
     
     /* Tarjetas de estadísticas sobrias */
     .stat-box {
@@ -305,7 +289,21 @@ if not df.empty:
                     fecha_f = row['Fecha'].strftime("%d/%m")
                     texto = f"Hola {row['Cliente']}, le recordamos su turno de {row['Servicio']} para el {fecha_f} a las {row['Hora']} hs. Saludos."
                     link = f"https://wa.me/{row['WhatsApp']}?text={urllib.parse.quote(texto)}"
-                    st.link_button("💬 RECORDATORIO", link)
+                    
+                    st.markdown(f'''
+                        <a href="{link}" target="_blank" style="
+                            display: block;
+                            background-color: #000000;
+                            color: #ffffff;
+                            padding: 0.45rem 0.8rem;
+                            border-radius: 6px;
+                            text-align: center;
+                            text-decoration: none;
+                            font-weight: 500;
+                            font-size: 0.9rem;
+                            width: 100%;
+                        ">💬 Recordatorio</a>
+                    ''', unsafe_allow_html=True)
                 
                 with cols[3]:
                     if st.button("❌ Borrar", key=f"del_{idx}"):
