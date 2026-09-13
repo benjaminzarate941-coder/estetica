@@ -10,14 +10,16 @@ import re
 st.set_page_config(
     page_title="Gestión de Turnos - Gabinete", 
     layout="wide",
-    page_icon="logo.png"  # <--- Tu logo como ícono de la pestaña
+    page_icon="logo.png"
 )
 
-# Ocultar menú, footer y header de Streamlit para que se vea 100% tu marca
+# Ocultar menú, footer, header y marca de creador de Streamlit para vista móvil profesional
 hide_streamlit_style = """
 <style>
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
+header {visibility: hidden;}
+[data-testid="stToolbar"] {visibility: hidden;}
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -37,15 +39,12 @@ def cargar_datos():
             return pd.DataFrame(columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
     return pd.DataFrame(columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
 
-
 def guardar_datos(df):
     df.to_csv(DB_FILE, index=False)
-
 
 def validar_telefono(tel):
     tel_limpio = re.sub(r'\D', '', tel)
     return len(tel_limpio) >= 10, tel_limpio
-
 
 def verificar_duplicado_cliente(df, cliente, fecha, hora):
     """Verifica si EL MISMO CLIENTE ya tiene turno en esa fecha y hora"""
@@ -60,23 +59,22 @@ def verificar_duplicado_cliente(df, cliente, fecha, hora):
     
     return not duplicados.empty
 
-
-# ==================== ESTILOS PROFESIONALES ====================
+# ==================== ESTILOS PROFESIONALES Y MÓVILES ====================
 
 st.markdown("""
 <style>
     .main-header {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 600;
         color: #2c3e50;
-        padding: 1rem 0;
-        margin-bottom: 1.5rem;
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
         text-align: center;
     }
     
     .stButton>button {
         width: 100%;
-        border-radius: 5px;
+        border-radius: 6px;
         height: 2.5em;
         background-color: #3498db;
         color: white;
@@ -89,27 +87,36 @@ st.markdown("""
     }
     
     .stat-box {
-        padding: 1.2rem;
-        border-radius: 6px;
+        padding: 1rem;
+        border-radius: 8px;
         background-color: #f8f9fa;
         border: 1px solid #e9ecef;
         text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
     .stat-number {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: #2c3e50;
     }
     
     .stat-label {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #7f8c8d;
-        margin-top: 0.3rem;
+        margin-top: 0.2rem;
+    }
+
+    .turno-card {
+        background-color: #ffffff;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 10px;
     }
     
     hr {
-        margin: 1.5rem 0;
+        margin: 1rem 0;
         border: none;
         border-top: 1px solid #e9ecef;
     }
@@ -123,10 +130,10 @@ if 'turnos' not in st.session_state:
 
 # ==================== HEADER CON LOGO ====================
 
-# Mostrar el logo centrado en la parte superior
 col_logo1, col_logo2, col_logo3 = st.columns([1, 2, 1])
 with col_logo2:
-    st.image("logo.png", width=180)
+    if os.path.exists("logo.png"):
+        st.image("logo.png", width=160)
 
 st.markdown('<div class="main-header">Sistema de Gestión de Turnos</div>', unsafe_allow_html=True)
 
@@ -154,7 +161,7 @@ with col2:
     st.markdown(f"""
     <div class="stat-box">
         <div class="stat-number">{len(turnos_semana)}</div>
-        <div class="stat-label">Próximos 7 Días</div>
+        <div class="stat-label">Próx. 7 Días</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -167,38 +174,37 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
+st.markdown("<br>", unsafe_allow_html=True)
+
 # ==================== FORMULARIO ====================
 
-with st.expander("Registrar Nuevo Turno", expanded=True):
+with st.expander("📅 Registrar Nuevo Turno", expanded=False):
     with st.form("form_turno", clear_on_submit=True):
-        col_a, col_b = st.columns(2)
+        cliente = st.text_input("Nombre del cliente")
+        servicio = st.selectbox("Servicio", [
+            "Depilación laser.soprano ice Platinum", 
+            "Ultracavitacion + vacumm", 
+            "Limpieza facial profunda",
+            "Tratamiento para piernas cansadas",
+            "Radiofrecuencia facial",
+            "Radiofrecuencia corporal",
+            "Masajes descontracturantes",
+            "Peeling enzimatico",
+            "Dermaplaning",
+            "Electroestimulacion",
+            "Peeling quimico",
+            "Tratamiento piel acneica",
+            "Tratamiento de hidratacion y nutricion facial",
+            "Tratamiento de rejuvenicimiento cuello y escotte",            
+        ])
         
-        with col_a:
-            cliente = st.text_input("Nombre del cliente")
-            servicio = st.selectbox("Servicio", [
-                "Depilación laser.soprano ice Platinum", 
-                "Ultracavitacion + vacumm", 
-                "Limpieza facial profunda",
-                "Tratamiento para piernas cansadas",
-                "Radiofrecuencia facial",
-                "Radiofrecuencia corporal",
-                "Masajes descontracturantes",
-                "Peeling enzimatico",
-                "Dermaplaning",
-                "Electroestimulacion",
-                "Peeling quimico",
-                "Tratamiento  piel acneica",
-                "Tratamiento de hidratacion y nutricion facial",
-                "Tratamiento de rejuvenicimiento cuello y escotte",            
-            ])
+        tel = st.text_input("WhatsApp (ej: 3815000000)")
         
-        with col_b:
-            tel = st.text_input("WhatsApp")
-            col_f, col_h = st.columns(2)
-            with col_f:
-                fecha = st.date_input("Fecha", datetime.today())
-            with col_h:
-                hora = st.time_input("Hora", value=time(9, 0))
+        col_f, col_h = st.columns(2)
+        with col_f:
+            fecha = st.date_input("Fecha", datetime.today())
+        with col_h:
+            hora = st.time_input("Hora", value=time(9, 0))
         
         if st.form_submit_button("Guardar Turno"):
             if not cliente or not tel:
@@ -211,7 +217,7 @@ with st.expander("Registrar Nuevo Turno", expanded=True):
                     st.warning(f"{cliente} ya tiene un turno agendado para el {fecha.strftime('%d/%m')} a las {hora.strftime('%H:%M')}")
                 else:
                     nuevo = pd.DataFrame([[cliente.strip(), tel_limpio, servicio, fecha, hora.strftime("%H:%M")]], 
-                                        columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
+                                         columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
                     st.session_state.turnos = pd.concat([st.session_state.turnos, nuevo], ignore_index=True)
                     st.session_state.turnos = st.session_state.turnos.sort_values(by=["Fecha", "Hora"]).reset_index(drop=True)
                     guardar_datos(st.session_state.turnos)
@@ -225,14 +231,14 @@ st.markdown("<hr>", unsafe_allow_html=True)
 col_f1, col_f2, col_f3 = st.columns(3)
 
 with col_f1:
-    busqueda = st.text_input("Buscar cliente", placeholder="Nombre...")
+    busqueda = st.text_input("🔍 Buscar cliente", placeholder="Nombre...")
 
 with col_f2:
     servicios = sorted(st.session_state.turnos['Servicio'].unique()) if not st.session_state.turnos.empty else []
-    filtro_serv = st.selectbox("Por servicio", ["Todos"] + servicios)
+    filtro_serv = st.selectbox("📂 Por servicio", ["Todos"] + servicios)
 
 with col_f3:
-    filtro_fecha = st.date_input("Por fecha", None)
+    filtro_fecha = st.date_input("📆 Por fecha específica", value=None)
 
 # Filtrar
 df = st.session_state.turnos.copy()
@@ -250,64 +256,69 @@ df = df.sort_values(by=["Fecha", "Hora"]).reset_index(drop=True)
 
 # ==================== LISTA DE TURNOS ====================
 
+st.markdown("### Listado de Turnos")
+
 if not df.empty:
     fechas = df['Fecha'].unique()
     
     for fecha in sorted(fechas):
         turnos_dia = df[df['Fecha'] == fecha]
-        st.markdown(f"**{fecha.strftime('%A %d/%m/%Y').title()}**")
+        st.markdown(f"**📌 {fecha.strftime('%A %d/%m/%Y').title()}**")
         
         for idx, row in turnos_dia.iterrows():
-            cols = st.columns([0.7, 2, 2, 1])
-            
-            with cols[0]:
-                st.write(f"**{row['Hora']}**")
-            
-            with cols[1]:
-                st.write(f"**{row['Cliente']}**")
-                st.caption(row['Servicio'])
-            
-            with cols[2]:
-                fecha_f = row['Fecha'].strftime("%d/%m")
-                texto = f"Hola {row['Cliente']}, le recordamos su turno de {row['Servicio']} para el {fecha_f} a las {row['Hora']} hs. Saludos."
-                link = f"https://wa.me/{row['WhatsApp']}?text={urllib.parse.quote(texto)}"
-                st.link_button("Enviar recordatorio", link)
-            
-            with cols[3]:
-                if st.button("Eliminar", key=f"del_{idx}"):
-                    st.session_state.turnos = st.session_state.turnos.drop(idx).reset_index(drop=True)
-                    guardar_datos(st.session_state.turnos)
-                    st.success("Eliminado")
-                    st.rerun()
-            
-            st.markdown("---")
+            with st.container():
+                cols = st.columns([0.8, 2.2, 1.8, 1])
+                
+                with cols[0]:
+                    st.markdown(f"🕒 **{row['Hora']}**")
+                
+                with cols[1]:
+                    st.markdown(f"👤 **{row['Cliente']}**")
+                    st.caption(row['Servicio'])
+                
+                with cols[2]:
+                    fecha_f = row['Fecha'].strftime("%d/%m")
+                    texto = f"Hola {row['Cliente']}, le recordamos su turno de {row['Servicio']} para el {fecha_f} a las {row['Hora']} hs. Saludos."
+                    link = f"https://wa.me/{row['WhatsApp']}?text={urllib.parse.quote(texto)}"
+                    st.link_button("💬 Recordatorio", link)
+                
+                with cols[3]:
+                    if st.button("❌ Borrar", key=f"del_{idx}"):
+                        st.session_state.turnos = st.session_state.turnos.drop(idx).reset_index(drop=True)
+                        guardar_datos(st.session_state.turnos)
+                        st.success("Eliminado")
+                        st.rerun()
+                
+            st.markdown("<hr style='margin: 0.5rem 0;'>", unsafe_allow_html=True)
 else:
-    st.info("No hay turnos registrados")
+    st.info("No hay turnos registrados con los filtros actualizados.")
 
 # ==================== SIDEBAR ====================
 
 with st.sidebar:
-    st.header("Opciones")
+    st.header("Panel de Control")
     
-    if st.button("Exportar CSV"):
+    if st.button("📥 Exportar Base CSV"):
         if not st.session_state.turnos.empty:
             csv = st.session_state.turnos.to_csv(index=False).encode('utf-8')
             st.download_button(
-                "Descargar",
+                "Descargar Archivo",
                 csv,
                 f"turnos_{datetime.now().strftime('%Y%m%d')}.csv",
                 "text/csv"
             )
+        else:
+            st.warning("No hay datos para exportar")
     
     st.write("---")
     
-    if st.button("Limpiar todo"):
-        if st.checkbox("¿Confirmar?"):
+    if st.button("🗑️ Limpiar Base de Datos"):
+        if st.checkbox("Confirmar eliminación total"):
             if os.path.exists(DB_FILE):
                 os.remove(DB_FILE)
             st.session_state.turnos = pd.DataFrame(columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
-            st.success("Datos eliminados")
+            st.success("Base de datos reseteada")
             st.rerun()
     
     st.write("---")
-    st.caption(f"Registros: {len(st.session_state.turnos)}")
+    st.caption(f"Total registros: {len(st.session_state.turnos)}")
