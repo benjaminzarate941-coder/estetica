@@ -306,4 +306,44 @@ if not df.empty:
                     texto = f"Hola {row['Cliente']}, le recordamos su turno de {row['Servicio']} para el {fecha_f} a las {row['Hora']} hs. Saludos."
                     link = f"https://wa.me/{row['WhatsApp']}?text={urllib.parse.quote(texto)}"
                     st.link_button("💬 RECORDATORIO", link)
-                                with cols[3]:
+                
+                with cols[3]:
+                    if st.button("❌ Borrar", key=f"del_{idx}"):
+                        st.session_state.turnos = st.session_state.turnos.drop(idx).reset_index(drop=True)
+                        guardar_datos(st.session_state.turnos)
+                        st.success("Eliminado")
+                        st.rerun()
+                
+            st.markdown("<hr style='margin: 0.5rem 0;'>", unsafe_allow_html=True)
+else:
+    st.info("No hay turnos registrados con los filtros actualizados.")
+
+# ==================== SIDEBAR ====================
+
+with st.sidebar:
+    st.header("Panel de Control")
+    
+    if st.button("📥 Exportar Base CSV"):
+        if not st.session_state.turnos.empty:
+            csv = st.session_state.turnos.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                "Descargar Archivo",
+                csv,
+                f"turnos_{datetime.now().strftime('%Y%m%d')}.csv",
+                "text/csv"
+            )
+        else:
+            st.warning("No hay datos para exportar")
+    
+    st.write("---")
+    
+    if st.button("🗑️ Limpiar Base de Datos"):
+        if st.checkbox("Confirmar eliminación total"):
+            if os.path.exists(DB_FILE):
+                os.remove(DB_FILE)
+            st.session_state.turnos = pd.DataFrame(columns=["Cliente", "WhatsApp", "Servicio", "Fecha", "Hora"])
+            st.success("Base de datos reseteada")
+            st.rerun()
+    
+    st.write("---")
+    st.caption(f"Total registros: {len(st.session_state.turnos)}")
