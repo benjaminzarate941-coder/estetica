@@ -108,6 +108,14 @@ st.markdown("""
         background-color: #262626 !important;
         color: #ffffff !important;
     }
+
+    /* Estilo destacado para el Expander de Registrar Turno para que quede bien a la vista */
+    [data-testid="stExpander"] {
+        border: 2px solid #0284c7 !important;
+        border-radius: 8px !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
     
     /* Tarjetas de estadísticas sobrias */
     .stat-box {
@@ -202,7 +210,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ==================== FORMULARIO ====================
 
-with st.expander("📅 Registrar Nuevo Turno", expanded=False):
+with st.expander("📅 Registrar Nuevo Turno (Hacer clic para desplegar)", expanded=True):
     with st.form("form_turno", clear_on_submit=True):
         cliente = st.text_input("Nombre del cliente")
         servicio = st.selectbox("Servicio", [
