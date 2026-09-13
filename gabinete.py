@@ -78,7 +78,7 @@ st.markdown("""
         letter-spacing: -0.5px;
     }
     
-    /* Botones principales */
+    /* Botones principales generales */
     .stButton>button {
         width: 100%;
         border-radius: 6px;
@@ -92,6 +92,21 @@ st.markdown("""
     
     .stButton>button:hover {
         background-color: #0369a1;
+    }
+
+    /* Forzar fondo negro y letras blancas para el botón de enviar formulario (Guardar Turno) */
+    [data-testid="stFormSubmitButton"] button {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border: none !important;
+        font-weight: 500 !important;
+        border-radius: 6px !important;
+        width: 100% !important;
+    }
+    
+    [data-testid="stFormSubmitButton"] button:hover {
+        background-color: #262626 !important;
+        color: #ffffff !important;
     }
     
     /* Tarjetas de estadísticas sobrias */
