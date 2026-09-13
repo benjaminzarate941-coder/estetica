@@ -77,24 +77,67 @@ st.markdown("""
         text-align: center;
         letter-spacing: -0.5px;
     }
-    
-    /* Botones principales generales */
-    .stButton>button {
+
+    /* ============================================================
+       BOTONES: TODOS EN NEGRO CON LETRAS BLANCAS
+       ============================================================ */
+    .stButton > button,
+    .stDownloadButton > button,
+    div[data-testid="stFormSubmitButton"] button,
+    div[data-testid="stForm"] .stButton > button,
+    form .stButton > button {
         width: 100%;
         border-radius: 6px;
         height: 2.5em;
-        background-color: #0284c7;
-        color: white;
+        background-color: #000000 !important;
+        color: #ffffff !important;
         font-weight: 500;
-        border: none;
+        border: none !important;
         transition: background-color 0.2s ease;
     }
-    
-    .stButton>button:hover {
-        background-color: #0369a1;
+
+    /* Fuerza el color del texto interno (Streamlit envuelve el label en <p>/<div>) */
+    .stButton > button *,
+    .stDownloadButton > button *,
+    div[data-testid="stFormSubmitButton"] button *,
+    div[data-testid="stForm"] .stButton > button *,
+    form .stButton > button * {
+        color: #ffffff !important;
     }
 
-    /* Estilo destacado para el Expander de Registrar Turno para que quede bien a la vista */
+    /* Hover: gris muy oscuro para dar feedback */
+    .stButton > button:hover,
+    .stDownloadButton > button:hover,
+    div[data-testid="stFormSubmitButton"] button:hover,
+    div[data-testid="stForm"] .stButton > button:hover,
+    form .stButton > button:hover {
+        background-color: #262626 !important;
+        color: #ffffff !important;
+    }
+
+    .stButton > button:hover *,
+    .stDownloadButton > button:hover *,
+    div[data-testid="stFormSubmitButton"] button:hover *,
+    div[data-testid="stForm"] .stButton > button:hover *,
+    form .stButton > button:hover * {
+        color: #ffffff !important;
+    }
+
+    /* Focus (cuando el botón queda seleccionado por teclado) */
+    .stButton > button:focus,
+    .stDownloadButton > button:focus,
+    div[data-testid="stFormSubmitButton"] button:focus,
+    form .stButton > button:focus {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 0 2px #94a3b8 !important;
+    }
+
+    /* ============================================================
+       ESTILOS GENERALES
+       ============================================================ */
+
+    /* Estilo destacado para el Expander de Registrar Turno */
     [data-testid="stExpander"] {
         border: 2px solid #0284c7 !important;
         border-radius: 8px !important;
@@ -222,24 +265,6 @@ with st.expander("📅 Registrar Nuevo Turno (Hacer clic para desplegar)", expan
             fecha = st.date_input("Fecha", datetime.today())
         with col_h:
             hora = st.time_input("Hora", value=time(9, 0))
-        
-        # Botón de envío estilizado mediante HTML/CSS embebido
-        st.markdown("""
-            <style>
-            div[data-testid="stFormSubmitButton"] > button {
-                background-color: #000000 !important;
-                color: #ffffff !important;
-                border: none !important;
-                font-weight: 500 !important;
-                border-radius: 6px !important;
-                width: 100% !important;
-            }
-            div[data-testid="stFormSubmitButton"] > button:hover {
-                background-color: #262626 !important;
-                color: #ffffff !important;
-            }
-            </style>
-        """, unsafe_allow_html=True)
 
         submitted = st.form_submit_button("Guardar Turno")
         
