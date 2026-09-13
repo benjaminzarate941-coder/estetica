@@ -59,66 +59,75 @@ def verificar_duplicado_cliente(df, cliente, fecha, hora):
     
     return not duplicados.empty
 
-# ==================== ESTILOS PROFESIONALES Y MÓVILES ====================
+# ==================== COLORIMETRÍA Y ESTILOS LUMINOSOS (ESTILO SPA/GABINETE) ====================
 
 st.markdown("""
 <style>
+    /* Fondo general más luminoso y limpio */
+    .stApp {
+        background-color: #fcfcfd;
+    }
+
     .main-header {
-        font-size: 1.6rem;
+        font-size: 1.7rem;
         font-weight: 600;
-        color: #2c3e50;
+        color: #2d3748;
         padding: 0.5rem 0;
         margin-bottom: 1rem;
         text-align: center;
+        letter-spacing: -0.5px;
     }
     
+    /* Botones principales con tono elegante y luminoso (Teal/Mint armónico) */
     .stButton>button {
         width: 100%;
-        border-radius: 6px;
-        height: 2.5em;
-        background-color: #3498db;
+        border-radius: 8px;
+        height: 2.6em;
+        background-color: #0d9488;
         color: white;
         font-weight: 500;
         border: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(13, 148, 136, 0.2);
     }
     
     .stButton>button:hover {
-        background-color: #2980b9;
+        background-color: #0f766e;
+        box-shadow: 0 4px 8px rgba(13, 148, 136, 0.3);
     }
     
+    /* Tarjetas de estadísticas con efecto limpio y moderno */
     .stat-box {
-        padding: 1rem;
-        border-radius: 8px;
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
+        padding: 1.2rem;
+        border-radius: 12px;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
         text-align: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
     
     .stat-number {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: 700;
-        color: #2c3e50;
+        color: #0f766e;
     }
     
     .stat-label {
-        font-size: 0.8rem;
-        color: #7f8c8d;
-        margin-top: 0.2rem;
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-top: 0.3rem;
+        font-weight: 500;
     }
 
-    .turno-card {
-        background-color: #ffffff;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
-        margin-bottom: 10px;
+    /* Contenedores y textos generales más claros */
+    h1, h2, h3, p, label {
+        color: #1e293b;
     }
     
     hr {
-        margin: 1rem 0;
+        margin: 1.2rem 0;
         border: none;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid #e2e8f0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -178,7 +187,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ==================== FORMULARIO ====================
 
-with st.expander("📅 Registrar Nuevo Turno", expanded=False):
+with st.expander("✨ Registrar Nuevo Turno", expanded=False):
     with st.form("form_turno", clear_on_submit=True):
         cliente = st.text_input("Nombre del cliente")
         servicio = st.selectbox("Servicio", [
